@@ -1,6 +1,5 @@
 from typing import Optional, Type
 
-
 class CfgEnv:
     def __new__(cls: Type["CfgEnv"]) -> "CfgEnv": ...
 
@@ -16,7 +15,6 @@ class BlockEnv:
         gas_limit: Optional[int] = None,
         excess_blob_gas: Optional[int] = None,
     ) -> "BlockEnv": ...
-
     @property
     def number(self) -> Optional[int]: ...
     @property
@@ -59,7 +57,6 @@ class TxEnv:
         blob_hashes: Optional[list[bytes]] = None,
         max_fee_per_blob_gas: Optional[int] = None,
     ) -> "TxEnv": ...
-
     @property
     def caller(self) -> Optional[str]: ...
     @property
@@ -105,13 +102,11 @@ class Env:
     @property
     def tx(self: "AccountInfo") -> Optional[TxEnv]: ...
 
-
 class JournalCheckpoint:
     @property
     def log_i(self) -> int: ...
     @property
     def journal_i(self) -> int: ...
-
 
 class AccountInfo:
     def __new__(
@@ -120,7 +115,6 @@ class AccountInfo:
         code_hash: Optional[bytes] = None,
         code: Optional[bytes] = None,
     ) -> "AccountInfo": ...
-
     @property
     def balance(self: "AccountInfo") -> int: ...
     @property
@@ -129,7 +123,6 @@ class AccountInfo:
     def code(self: "AccountInfo") -> Optional[bytes]: ...
     @property
     def code_hash(self: "AccountInfo") -> Optional[bytes]: ...
-
 
 class ExecutionResult:
     def __new__(
@@ -153,7 +146,6 @@ class ExecutionResult:
     @property
     def logs(self) -> list["Log"]: ...
 
-
 class EVM:
     def __new__(
         cls: Type["EVM"],
@@ -176,10 +168,8 @@ class EVM:
         """
 
     def snapshot(self: "EVM") -> JournalCheckpoint: ...
-
     def revert(self: "EVM", checkpoint: JournalCheckpoint) -> None: ...
     def commit(self: "EVM") -> None: ...
-
     def basic(self: "EVM", address: str) -> AccountInfo:
         """
         Returns the basic account info for the given address.
@@ -201,6 +191,16 @@ class EVM:
         :param info: The account info.
         """
 
+    def insert_account_storage(
+        self: "EVM", address: str, index: int, value: int
+    ) -> None:
+        """
+        Inserts the provided account slot value in the database at the specified address.
+        :param address: The address of the account.
+        :param index: The slot index.
+        :param value: The slot value.
+        """
+
     def message_call(
         self: "EVM",
         caller: str,
@@ -209,7 +209,7 @@ class EVM:
         value: Optional[int] = None,
         gas: Optional[int] = None,
         gas_price: Optional[int] = None,
-        is_static = False,
+        is_static=False,
     ) -> bytes:
         """
         Processes a raw call, without committing the result to the state.
@@ -229,8 +229,8 @@ class EVM:
         code: bytes,
         value: Optional[int] = None,
         gas: Optional[int] = None,
-        is_static = False,
-        _abi: Optional[list[dict]] = None
+        is_static=False,
+        _abi: Optional[list[dict]] = None,
     ) -> str:
         """
         Deploys the given code.
@@ -274,64 +274,61 @@ class EVM:
 
     @property
     def env(self: "EVM") -> Env:
-        """ Get the environment. """
+        """Get the environment."""
 
     @property
     def tracing(self: "EVM") -> bool:
-        """ Whether tracing is enabled. """
+        """Whether tracing is enabled."""
 
     @tracing.setter
     def set_tracing(self: "EVM", value: bool) -> None:
-        """ Set whether tracing is enabled. """
+        """Set whether tracing is enabled."""
 
     @property
     def result(self: "EVM") -> Optional[ExecutionResult]:
-        """ The result of the execution. """
+        """The result of the execution."""
 
     @property
     def checkpoint_ids(self: "EVM") -> set[JournalCheckpoint]:
-        """ The checkpoint IDs. """
+        """The checkpoint IDs."""
 
     @property
     def journal_depth(self: "EVM") -> int:
-        """ The journal depth. """
+        """The journal depth."""
 
     @property
     def journal_len(self: "EVM") -> int:
-        """ The journal length. """
+        """The journal length."""
 
     @property
     def journal_str(self: "EVM") -> str:
-        """ The journal string. """
+        """The journal string."""
 
     @property
     def db_accounts(self: "EVM") -> dict[str, AccountInfo]:
-        """ The accounts in the database. """
+        """The accounts in the database."""
 
     @property
     def journal_state(self: "EVM") -> dict[str, AccountInfo]:
-        """ The state in the journal. """
+        """The state in the journal."""
 
     def set_block_env(self: "EVM", block: BlockEnv) -> None:
-        """ Set the block environment. """
+        """Set the block environment."""
 
     def set_tx_env(self: "EVM", block: TxEnv) -> None:
-        """ Set the transaction environment. """
+        """Set the transaction environment."""
 
     def reset_transient_storage(self: "EVM") -> None:
-        """ Reset the transient storage. """
-
+        """Reset the transient storage."""
 
 class Log:
     @property
     def address(self) -> str: ...
-
     @property
     def topics(self) -> list[str]: ...
-
     @property
     def data(self) -> tuple[list[bytes], bytes]:
-        """ :return: A tuple with a list of topics and the log data. """
-
+        """:return: A tuple with a list of topics and the log data."""
 
 def fake_exponential(factor: int, numerator: int, denominator: int) -> int: ...
+def log_something(): ...

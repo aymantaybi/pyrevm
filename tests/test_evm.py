@@ -1,10 +1,12 @@
 import json
+import logging
 import os
 
 from pyrevm import EVM, AccountInfo, BlockEnv, Env, TxEnv
 
 import pytest
 from tests.utils import encode_address, encode_uint, load_contract_bin
+
 
 address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"  # vitalik.eth
 address2 = "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
@@ -58,6 +60,20 @@ def test_fork_storage():
     evm = EVM(fork_url=fork_url, fork_block="latest")
     value = evm.storage(weth, 0)
     assert value > 0
+
+
+def test_insert_account_storage():
+
+    FORMAT = "%(levelname)s %(name)s %(asctime)-15s %(filename)s:%(lineno)d %(message)s"
+    logging.basicConfig(format=FORMAT)
+    logging.getLogger().setLevel(logging.DEBUG)
+
+    weth = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    evm = EVM(fork_url=fork_url, fork_block="latest")
+    evm.insert_account_storage(weth, 0, 10)
+    value = evm.storage(weth, 0)
+    print(f"value: {value}")
+    assert value == 10
 
 
 def test_deploy():

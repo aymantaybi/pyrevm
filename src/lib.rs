@@ -6,6 +6,7 @@
 #![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
 #![allow(clippy::too_many_arguments)]
 
+use log::info;
 use pyo3::prelude::*;
 
 mod database;
@@ -18,10 +19,12 @@ mod utils;
 
 pub use evm::EVM;
 pub use types::*;
-pub use utils::fake_exponential;
+pub use utils::{fake_exponential, log_something};
 
 #[pymodule]
 fn pyrevm(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+    pyo3_log::init();
+
     m.add_class::<EVM>()?;
 
     // Types

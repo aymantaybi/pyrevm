@@ -1,3 +1,4 @@
+use log::info;
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::types::PyBytes;
 use pyo3::{exceptions::PyTypeError, prelude::*};
@@ -29,4 +30,11 @@ pub(crate) fn from_pybytes(b: &PyBytes) -> PyResult<B256> {
 #[pyfunction]
 pub fn fake_exponential(factor: u64, numerator: u64, denominator: u64) -> u128 {
     revm_fake_exponential(factor, numerator, denominator)
+}
+
+#[pyfunction]
+pub fn log_something() {
+    // This will use the logger installed in `my_module` to send the `info`
+    // message to the Python logging facilities.
+    info!("Something!");
 }
