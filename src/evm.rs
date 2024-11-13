@@ -153,11 +153,8 @@ impl EVM {
 
     /// Inserts the provided account slot value in the database at the specified address.
     fn insert_account_storage(&mut self, address: &str, index: U256, value: U256) -> PyResult<()> {
-        log::info!("omg {:?}", self.context.db);
         let target = addr(address)?;
-        let result = self.context.db.insert_account_storage(target, index, value);
-        log::info!("omg {:?}", self.context.db);
-        result
+        self.context.db.insert_account_storage(target, index, value)
     }
 
     /// Set the balance of a given address.
